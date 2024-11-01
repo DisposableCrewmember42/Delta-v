@@ -28,8 +28,8 @@
   requirements:
   - !type:OverallPlaytimeRequirement
     time: 108000 # DeltaV - 30 hours
-  - !type:DepartmentTimeRequirement # DeltaV - Medical dept time requirement
-    department: Medical
+  - !type:RoleTimeRequirement # DeltaV - Chemist time requirement
+    role: JobChemist
     time: 36000 # DeltaV - 10 hours
 
 - type: antag
