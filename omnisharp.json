@@ -2,5 +2,6 @@
     "RoslynExtensionsOptions": {
         "DocumentAnalysisTimeoutMs": 600000,
         "EnableAnalyzersSupport": true
-    }
+    },
+    "DefaultLaunchSolution": "SpaceStation14.sln"
 }
