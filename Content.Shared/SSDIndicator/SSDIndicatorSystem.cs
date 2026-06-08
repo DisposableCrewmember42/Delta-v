@@ -43,12 +43,12 @@ public sealed class SSDIndicatorSystem : EntitySystem
     // DeltaV - SSD Recency START
     private void OnExamine(Entity<SSDIndicatorComponent> ent, ref ExaminedEvent args)
     {
-        if (!ent.Comp.IsSSD)
+        if (!ent.Comp.IsSSD || ent.Comp.SsdSince is not { } ssdSince)
             return;
 
         using (args.PushGroup(nameof(SSDIndicatorComponent)))
         {
-            var timestamp = (_timing.CurTime - ent.Comp.SsdSince).ToString("%hh':'mm':'ss");
+            var timestamp = (_timing.CurTime - ssdSince).ToString("%hh':'mm':'ss");
             args.PushMarkup(Loc.GetString("ssd-examine-duration", ("time", timestamp)));
             args.PushMarkup(Loc.GetString($"ssd-examine-{GetStage(ent).ToString().ToLower()}"));
         }
