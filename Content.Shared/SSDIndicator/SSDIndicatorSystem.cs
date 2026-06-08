@@ -1,6 +1,7 @@
 using Content.Shared._DV.CCVars; // DeltaV - SSD Recency
 using Content.Shared.CCVar;
 using Content.Shared.Examine; // DeltaV - SSD Recency
+using Content.Shared.Mobs.Systems; // DeltaV - SSD Recency
 using Content.Shared.StatusEffectNew;
 using Robust.Shared.Configuration;
 using Robust.Shared.Player;
@@ -19,12 +20,13 @@ public sealed class SSDIndicatorSystem : EntitySystem
     [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly StatusEffectsSystem _statusEffects = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!; // DeltaV - SSD Recency
 
     private bool _icSsdSleep;
     private float _icSsdSleepTime;
 
-    private TimeSpan _cryoableSsdSeconds; // DeltaV
-    private TimeSpan _recentSsdSeconds; // DeltaV
+    private TimeSpan _cryoableSsdSeconds; // DeltaV - SSD Recency
+    private TimeSpan _recentSsdSeconds; // DeltaV - SSD Recency
 
     public override void Initialize()
     {
@@ -44,6 +46,9 @@ public sealed class SSDIndicatorSystem : EntitySystem
     private void OnExamine(Entity<SSDIndicatorComponent> ent, ref ExaminedEvent args)
     {
         if (!ent.Comp.IsSSD || ent.Comp.SsdSince is not { } ssdSince)
+            return;
+
+        if (_mobState.IsDead(ent))
             return;
 
         using (args.PushGroup(nameof(SSDIndicatorComponent)))
